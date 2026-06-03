@@ -10,8 +10,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('change_requests', function (Blueprint $table) {
-            $table->id();
-            $table->string('request_no');
+            $table->id('request_no');
+        //   $table->string('request_no'); 
             $table->string('project_module');
             $table->string('department');
             $table->string('requested_by');
