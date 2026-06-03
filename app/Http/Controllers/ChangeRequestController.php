@@ -15,11 +15,13 @@ class ChangeRequestController extends Controller
     public function create()
     {      
         $lastrecord = ChangeRequest::orderby('request_no','desc')->first();
-        if(!$lastrecord ){
-            $newID = 1;
-        }else{
-            $newID = $lastrecord->request_no + 1;
-        }
+        $newID = !$lastrecord ? 1 : $lastrecord->request_no + 1;
+        // if (!$lastrecord) {
+        // $newID = 1;
+        // }else {
+        // $newID = $lastrecord->request_no + 1;
+        // }
+            
         
         return view('change_requests.create',compact('newID'));
     }
