@@ -6,20 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('change_requests', function (Blueprint $table) {
             $table->id();
+            $table->string('request_no');
+            $table->string('project_module');
+            $table->string('department');
+            $table->string('requested_by');
+            $table->string('priority');
+            $table->text('problem_statement');
+            $table->string('decision')->nullable();
+            $table->text('comments')->nullable();
+            $table->string('request_type');
+            $table->string('change_type');
+            $table->string('assigned_to')->nullable();
+            $table->date('assigned_date')->nullable();
+            $table->string('assigned_by')->nullable();
+            $table->string('uat_by')->nullable();
+            $table->string('version')->nullable();
+            $table->string('deployed_by')->nullable();
             $table->timestamps();
+
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('change_requests');
