@@ -9,7 +9,9 @@ class ChangeRequestController extends Controller
 {
     public function index()
     {
+        $changeRequests = ChangeRequest::all();
 
+    return view('change_requests.index', compact('changeRequests'));
     }
 
     public function create()
