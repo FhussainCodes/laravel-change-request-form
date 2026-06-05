@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ChangeRequest;
+use App\Models\User;
 
 class ChangeRequestController extends Controller
 {
@@ -14,19 +15,21 @@ class ChangeRequestController extends Controller
     return view('change_requests.index', compact('changeRequests'));
     }
 
-    public function create()
-    {      
-        $lastrecord = ChangeRequest::orderby('request_no','desc')->first();
-        $newID = !$lastrecord ? 1 : $lastrecord->request_no + 1;
-        // if (!$lastrecord) {
-        // $newID = 1;
-        // }else {
-        // $newID = $lastrecord->request_no + 1;
-        // }
-            
-        
-        return view('change_requests.create',compact('newID'));
-    }
+   public function create()
+{
+    $lastrecord = ChangeRequest::orderBy('request_no', 'desc')->first();
+    $newID = $lastrecord ? $lastrecord->request_no + 1 : 1;
+    $module = request('module', ''); 
+    $users = []; 
+
+    return view('change_requests.create', compact('newID', 'users', 'module'));
+}
+
+public function getUsersByModule(Request $request)
+{
+    $users = User::where('module', $request->module)->get(['id', 'name']);
+    return response()->json($users);
+}
 
     public function store(Request $request)
     {
