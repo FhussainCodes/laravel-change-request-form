@@ -12,6 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+        $middleware->redirectUsersTo(fn () => route('change-requests.create'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
