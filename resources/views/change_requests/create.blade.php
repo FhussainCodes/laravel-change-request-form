@@ -71,7 +71,13 @@
         <hr>
 
         <label>Assigned By</label>
-        <input type="text" name="assigned_by">
+        <input 
+            type="text" 
+            name="assigned_by" 
+            value="{{ auth()->check() ? auth()->user()->name : '' }}" 
+            readonly 
+            required
+        >
         <hr>
 
         <label>UAT By</label>
@@ -98,4 +104,5 @@
         alert("{{ session('success') }}");
     </script>
 @endif
+
 @endsection
