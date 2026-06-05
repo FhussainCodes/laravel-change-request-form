@@ -45,6 +45,7 @@ public function getUsersByModule(Request $request)
 
  
         $newRequest = ChangeRequest::create([
+            'request_no' => $request->request_no,
             'project_module' => $request->project_module,
             'department' => $request->department,
             'requested_by' => $request->requested_by,
