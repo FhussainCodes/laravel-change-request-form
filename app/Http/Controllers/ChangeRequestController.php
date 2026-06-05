@@ -11,8 +11,7 @@ class ChangeRequestController extends Controller
     public function index()
     {
         $changeRequests = ChangeRequest::all();
-
-    return view('change_requests.index', compact('changeRequests'));
+        return view('change_requests.index', compact('changeRequests'));
     }
 
    public function create()
@@ -43,9 +42,7 @@ public function getUsersByModule(Request $request)
             'change_type' => 'required',
         ]);
 
- 
-        $newRequest = ChangeRequest::create([
-            'request_no' => $request->request_no,
+        $newRequest = ChangeRequest::create([   
             'project_module' => $request->project_module,
             'department' => $request->department,
             'requested_by' => $request->requested_by,

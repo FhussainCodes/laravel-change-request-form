@@ -1,12 +1,10 @@
 @extends('layouts.app')
-
 @section('content')
 
 <div>
-
     <h2>Change Request Form</h2>
 
-    <form action="{{ route('change-requests.store') }}" method="POST">
+       <form action="{{ route('change-requests.store') }}" method="POST">
         @csrf
 
         <label>Request No</label>
@@ -14,12 +12,12 @@
         <hr>
 
         <label>Project Module</label>
-       <select name="project_module" id="module" onchange="getUsersByModule(this.value)">
-    <option value="">Select Module</option>
-    <option value="DEV" {{ $module == 'DEV' ? 'selected' : '' }} >DEV</option>
-    <option value="Network/Infrastructure" {{ $module == 'Network/Infrastructure' ? 'selected' : '' }} >Network / Infrastructure</option>
-    <option value="GIS/Support" {{ $module == 'GIS/Support' ? 'selected' : '' }} >GIS / Support</option>
-</select>
+        <select name="project_module" id="module" onchange="getUsersByModule(this.value)">
+        <option value="">Select Module</option>
+            <option value="DEV" {{ $module == 'DEV' ? 'selected' : '' }} >DEV</option>
+            <option value="Network/Infrastructure" {{ $module == 'Network/Infrastructure' ? 'selected' : '' }} >Network / Infrastructure</option>
+            <option value="GIS/Support" {{ $module == 'GIS/Support' ? 'selected' : '' }} >GIS / Support</option>
+        </select>
         <hr>
 
         <label>Department</label>
@@ -34,7 +32,7 @@
         <select name="priority" required>
             <option value="">Select Priority</option>
             <option value="low">Low</option>
-            <option value="medium">Medium</option>
+            <option value="medium" selected>Medium</option>
             <option value="high">High</option>
         </select>
         <hr>
@@ -62,7 +60,10 @@
         <h4>Optional Fields</h4>
 
         <label>Assigned To</label>
-        <input type="text" name="assigned_to">
+        
+        <select name="assigned_to" id="assigned_to">
+            <option value="">Select Assigned Person</option>
+        </select>
         <hr>
 
         <label>Assigned Date</label>
@@ -70,10 +71,7 @@
         <hr>
 
         <label>Assigned By</label>
-      
-<select name="assigned_by" id="assigned_by">
-    <option value="">Select Assigned Person</option>
-    </select>
+        <input type="text" name="assigned_by">
         <hr>
 
         <label>UAT By</label>
@@ -90,29 +88,23 @@
 
         <button type="submit">
             Submit Change Request
-
         </button>
-
     </form>
 </div>
 
 <script>
 function getUsersByModule(moduleName) {
-    const assignedByDropdown = document.getElementById('assigned_by');
+    const assignedByDropdown = document.getElementById('assigned_to');
     
-    // Clear previous options except the first placeholder
     assignedByDropdown.innerHTML = '<option value="">Select Assigned Person</option>';
-    
-    if (!moduleName) return; // If no module selected, stop here.
+    if (!moduleName) return; 
 
-    // Make an AJAX call to our Laravel route
     fetch(`/get-users-by-module?module=${encodeURIComponent(moduleName)}`)
         .then(response => response.json())
         .then(users => {
-            // Loop through users and add them as options
             users.forEach(user => {
                 const option = document.createElement('option');
-                option.value = user.name; // matching your original implementation
+                option.value = user.name; 
                 option.textContent = user.name;
                 assignedByDropdown.appendChild(option);
             });
