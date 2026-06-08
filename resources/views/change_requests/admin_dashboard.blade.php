@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
-<div class="py-12 px-4 max-w-6xl mx-auto">
+
+<div class="py-12 px-4 max-w-7xl mx-auto">
     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700">
         <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Admin Control panel - Incoming Change Requests</h2>
         
@@ -13,62 +14,93 @@
                         <th class="p-4">Module</th>
                         <th class="p-4">Priority</th>
                         <th class="p-4">Assigned Status</th>
-                        <th class="p-4">Actions</th>
+                        <th class="p-4">Created At</th>
+                        @if(auth()->user()->role === 'admin')
+                            <th class="p-4 text-center">Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 text-gray-600 dark:text-gray-400">
-                    @foreach($changeRequests as $row)
-<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-100 dark:border-gray-700">
-    
-    <td class="p-4 font-mono font-bold text-indigo-600 dark:text-indigo-400">
-        #{{ $row->request_no }}
-    </td>
-    
-    <td class="p-4 text-gray-700 dark:text-gray-300">
-        {{ $row->requested_by }}
-    </td>
-    
-    <td class="p-4 text-gray-600 dark:text-gray-400">
-        {{ $row->project_module }}
-    </td>
-    
-    <td class="p-4">
-        @if(strtolower($row->priority) === 'high')
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">High</span>
-        @elseif(strtolower($row->priority) === 'medium')
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Medium</span>
-        @else
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Low</span>
-        @endif
-    </td>
-    
-    <td class="p-4">
-        @if(!empty($row->assigned_to))
-            <span class="inline-flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Assigned to {{ $row->assigned_to }}
-            </span>
-        @else
-            <span class="inline-flex items-center text-sm font-semibold text-amber-600 dark:text-amber-400 animate-pulse">
-                ⏳ Action Required
-            </span>
-        @endif
-    </td>
-    
-    <td class="p-4 text-center whitespace-nowrap align-middle" style="min-width: 130px; width: 130px;">
-    <a href="{{ route('change-requests.edit', $row->request_no) }}" 
-       class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md transition-all duration-150 transform hover:-translate-y-0.5"
-       style="color: #ffffff !important; background-image: linear-gradient(to right, #4f46e5, #2563eb) !important; display: inline-flex !important; opacity: 1 !important; visibility: visible !important;">
-        <svg class="w-3.5 h-3.5 mr-1.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: #ffffff !important;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-        </svg>
-        Manage
-    </a>
-</td>
-</tr>
-@endforeach
+                    @forelse($changeRequests as $row)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-100 dark:border-gray-700">
+                            
+                            <td class="p-4 font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                                #{{ $row->request_no }}
+                            </td>
+                            
+                            <td class="p-4 text-gray-700 dark:text-gray-300">
+                                {{ $row->requested_by }}
+                            </td>
+                            
+                            <td class="p-4 text-gray-600 dark:text-gray-400">
+                                {{ $row->project_module }}
+                            </td>
+                            
+                            <td class="p-4">
+                                @if(strtolower($row->priority) === 'high')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">High</span>
+                                @elseif(strtolower($row->priority) === 'medium')
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Medium</span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Low</span>
+                                @endif
+                            </td>
+                            
+                            <td class="p-4">
+                                @if(!empty($row->assigned_to))
+                                    <span class="inline-flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        Assigned to {{ $row->assigned_to }}
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center text-sm font-semibold text-amber-600 dark:text-amber-400 animate-pulse">
+                                        ⏳ Action Required
+                                    </span>
+                                @endif
+                            </td>
+
+                            <td class="p-4">
+                                {{ $row->created_at }}
+                            </td>
+                            
+                            @if(auth()->user()->role === 'admin')
+                                <td class="p-4 text-center whitespace-nowrap align-middle space-x-2">
+                                    <a href="{{ route('change-requests.edit', $row->request_no) }}" 
+                                       class="inline-flex items-center justify-center px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md transition-all duration-150 transform hover:-translate-y-0.5"
+                                       style="color: #ffffff !important; background-image: linear-gradient(to right, #4f46e5, #2563eb) !important;">
+                                        <svg class="w-3.5 h-3.5 mr-1.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                        Manage
+                                    </a>
+
+                                    <form action="{{ route('change-requests.destroy', $row->request_no) }}" 
+                                          method="POST" 
+                                          class="inline-block"
+                                          onsubmit="return confirm('Are you sure you want to delete Request #{{ $row->request_no }}? This cannot be undone.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="inline-flex items-center justify-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md transition-all duration-150 transform hover:-translate-y-0.5"
+                                                style="background-image: linear-gradient(to right, #dc2626, #b91c1c) !important; color: #ffffff !important;">
+                                            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                             Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            @endif
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="{{ auth()->user()->role === 'admin' ? 7 : 6 }}" class="text-center py-8 bg-gray-50 dark:bg-gray-900/50 text-gray-400 italic font-semibold">
+                                No change requests found.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

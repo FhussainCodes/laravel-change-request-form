@@ -108,8 +108,17 @@ public function getUsersByModule(Request $request)
     return redirect()->route('change-requests.index')->with('success', 'Optional fields updated successfully!');
 }
 
-    public function destroy()
-    {
-
+    public function destroy($id)
+{
+    if (auth()->user()->role !== 'admin') {
+        abort(403, 'Unauthorized action. Only admins can delete requests.');
     }
+
+    $changeRequest = ChangeRequest::where('request_no', $id)->firstOrFail();
+
+    $changeRequest->delete();
+
+    return redirect()->route('change-requests.index')
+                     ->with('success', 'Change Request #' . $id . ' has been deleted successfully!');
+}
 }
