@@ -16,6 +16,12 @@ class ChangeRequestController extends Controller
 
    public function create()
 {
+    $user = auth()->user();
+    if($user->role = 'admin'){
+        $changeRequests = ChangeRequest::orderBy('created_at', 'desc')->get();
+        return view('change_requests.admin_dashboard', compact('changeRequests'));
+    }
+
     $lastrecord = ChangeRequest::orderBy('request_no', 'desc')->first();
     $newID = $lastrecord ? $lastrecord->request_no + 1 : 1;
     $module = request('module', ''); 
@@ -68,14 +74,33 @@ public function getUsersByModule(Request $request)
 
     }
 
-    public function edit()
+    public function edit($id)
     {
-
+        if (auth()->user()->role !== 'admin') {
+        abort(403, 'Unauthorized action.');
+    }
+    $changeRequest = ChangeRequest::findOrFail($id);
+    return view('change_requests.admin_edit', compact('changeRequest'));
     }
 
     public function update()
     {
+        if (auth()->user()->role !== 'admin') {
+        abort(403, 'Unauthorized action.');
+    }
+        $changeRequest = ChangeRequest::findOrFail($id);
 
+        $changeRequest->update([
+        'assigned_to'   => $request->assigned_to,
+        'assigned_date' => $request->assigned_date,
+        'assigned_by'   => auth()->user()->name, // Lock to the admin's name
+        'uat_by'        => $request->uat_by,
+        'deployed_by'   => $request->deployed_by,
+        'version'       => $request->version,
+    ]);
+
+        return redirect()->route('change-requests.create')->with('success', 'Optional fields updated successfully!');
+        
     }
 
     public function destroy()

@@ -172,103 +172,151 @@
                 ></textarea>
             </div>
 
-            <div class="mt-10">
-                <h3 class="text-xl font-bold text-indigo-700">
-                    Optional Information
-                </h3>
 
-                <div class="w-20 h-1 bg-indigo-600 rounded mt-2 mb-6"></div>
+            
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <div class="mt-10">
+    <h3 class="text-xl font-bold text-indigo-700">
+        Optional Information
+    </h3>
 
-                <div>
-                    <label class="block font-semibold text-gray-700 mb-2">
-                        Assigned To
-                    </label>
+    <div class="w-20 h-1 bg-indigo-600 rounded mt-2 mb-6"></div>
+</div>
 
-                    <select
-                        name="assigned_to"
-                        id="assigned_to"
-                        class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
-                    >
-                        <option value="">Select Assigned Person</option>
-                    </select>
-                </div>
+@if(auth()->user()->role === 'admin')
 
-                <div>
-                    <label class="block font-semibold text-gray-700 mb-2">
-                        Assigned Date
-                    </label>
+<div class="relative py-4">
+    <span class="text-xs font-bold uppercase text-gray-400">
+        Admin Workflow Parameters
+    </span>
+</div>
 
-                    <input
-                        type="date"
-                        name="assigned_date"
-                        class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
-                    >
-                </div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <div>
-                    <label class="block font-semibold text-gray-700 mb-2">
-                        Assigned By
-                    </label>
+    <div>
+        <label class="block font-semibold text-gray-700 mb-2">
+            Assigned To
+        </label>
 
-                    <input
-                        type="text"
-                        name="assigned_by"
-                        value="{{ auth()->check() ? auth()->user()->name : '' }}"
-                        readonly
-                        class="w-full rounded-xl bg-gray-100 border-gray-300 shadow-sm"
-                    >
-                </div>
+        <select
+            name="assigned_to"
+            id="assigned_to"
+            class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
+        >
+            <option value="">Select Assigned Person</option>
+        </select>
+    </div>
 
-                <div>
-                    <label class="block font-semibold text-gray-700 mb-2">
-                        UAT By
-                    </label>
+    <div>
+        <label class="block font-semibold text-gray-700 mb-2">
+            Assigned Date
+        </label>
 
-                    <input
-                        type="text"
-                        name="uat_by"
-                        class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
-                    >
-                </div>
+        <input
+            type="date"
+            name="assigned_date"
+            class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
+        >
+    </div>
 
-                <div>
-                    <label class="block font-semibold text-gray-700 mb-2">
-                        Deployed By
-                    </label>
+    <div>
+        <label class="block font-semibold text-gray-700 mb-2">
+            Assigned By
+        </label>
 
-                    <input
-                        type="text"
-                        name="deployed_by"
-                        class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
-                    >
-                </div>
+        <input
+            type="text"
+            name="assigned_by"
+            value="{{ auth()->user()->name }}"
+            readonly
+            class="w-full rounded-xl bg-gray-100 border-gray-300 shadow-sm"
+        >
+    </div>
 
-                <div>
-                    <label class="block font-semibold text-gray-700 mb-2">
-                        Version
-                    </label>
+    <div>
+        <label class="block font-semibold text-gray-700 mb-2">
+            UAT By
+        </label>
 
-                    <input
-                        type="text"
-                        name="version"
-                        placeholder="e.g. 1.0"
-                        class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
-                    >
-                </div>
+        <input
+            type="text"
+            name="uat_by"
+            class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
+        >
+    </div>
 
-            </div>
+    <div>
+        <label class="block font-semibold text-gray-700 mb-2">
+            Deployed By
+        </label>
 
-            <div class="mt-10">
-                <button
-                    type="submit"
-                    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-black font-bold py-4 rounded-xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition duration-300"
-                >
-                    Submit Change Request
-                </button>
-            </div>
+        <input
+            type="text"
+            name="deployed_by"
+            class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
+        >
+    </div>
+
+    <div>
+        <label class="block font-semibold text-gray-700 mb-2">
+            Version
+        </label>
+
+        <input
+            type="text"
+            name="version"
+            placeholder="e.g. 1.0"
+            class="w-full rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 transition"
+        >
+    </div>
+
+</div>
+
+@else
+
+@isset($changeRequest)
+
+<div class="mt-6 p-4 bg-gray-50 rounded-xl space-y-3 border border-gray-200">
+    <h4 class="text-sm font-bold text-gray-700">
+        Assignment Details (Filled by Admin)
+    </h4>
+
+    <p class="text-sm text-gray-600">
+        <strong>Assigned To:</strong>
+        {{ $changeRequest->assigned_to ?? 'Pending Allocation' }}
+    </p>
+
+    <p class="text-sm text-gray-600">
+        <strong>Assigned Date:</strong>
+        {{ $changeRequest->assigned_date ?? 'N/A' }}
+    </p>
+
+    <p class="text-sm text-gray-600">
+        <strong>Assigned By:</strong>
+        {{ $changeRequest->assigned_by ?? 'N/A' }}
+    </p>
+
+    <p class="text-sm text-gray-600">
+        <strong>Version Track:</strong>
+        {{ $changeRequest->version ?? 'v0.0.0' }}
+    </p>
+</div>
+
+@endisset
+
+@endif
+
+@if(auth()->user()->role !== 'admin')
+<div class="pt-4">
+    <button
+        type="submit"
+        class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl"
+    >
+        Submit Change Request
+    </button>
+</div>
+@endif
         </form>
     </div>
 </div>
