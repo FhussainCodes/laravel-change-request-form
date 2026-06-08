@@ -177,9 +177,6 @@
             </div>
 
            <div class="mt-10">
-    <h3 class="text-xl font-bold text-indigo-700">
-        Optional Information
-    </h3>
 
     <div class="w-20 h-1 bg-indigo-600 rounded mt-2 mb-6"></div>
 </div>
@@ -311,7 +308,7 @@
 <div class="pt-4">
     <button
         type="submit"
-        class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl"
+        class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r text-black from-emerald-600 to-teal-600 font-semibold rounded-xl"
     >
         Submit Change Request
     </button>

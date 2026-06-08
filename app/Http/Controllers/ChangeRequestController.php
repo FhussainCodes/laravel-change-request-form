@@ -9,25 +9,25 @@ use App\Models\User;
 class ChangeRequestController extends Controller
 {
     public function index()
-    {
-        $changeRequests = ChangeRequest::all();
-        return view('change_requests.index', compact('changeRequests'));
-    }
-
-   public function create()
 {
-    $user = auth()->user();
-    if($user->role = 'admin'){
+    if (auth()->user()->role === 'admin') {
         $changeRequests = ChangeRequest::orderBy('created_at', 'desc')->get();
         return view('change_requests.admin_dashboard', compact('changeRequests'));
+    }
+    return redirect()->route('change-requests.create');
+}
+
+  public function create()
+{
+    if (auth()->user()->role === 'admin') {
+        return redirect()->route('change-requests.index');
     }
 
     $lastrecord = ChangeRequest::orderBy('request_no', 'desc')->first();
     $newID = $lastrecord ? $lastrecord->request_no + 1 : 1;
     $module = request('module', ''); 
-    $users = []; 
 
-    return view('change_requests.create', compact('newID', 'users', 'module'));
+    return view('change_requests.create', compact('newID', 'module'));
 }
 
 public function getUsersByModule(Request $request)
@@ -66,7 +66,8 @@ public function getUsersByModule(Request $request)
             'version' => $request->version,
         ]);
 
-        return redirect()->route('change-requests.create')->with('success', 'Data saved successfully!');    
+        return redirect()->route('change-requests.create')
+                     ->with('success', 'Change Request submitted successfully!');   
     }
 
     public function show()
@@ -75,33 +76,37 @@ public function getUsersByModule(Request $request)
     }
 
     public function edit($id)
-    {
-        if (auth()->user()->role !== 'admin') {
+{
+    if (auth()->user()->role !== 'admin') {
         abort(403, 'Unauthorized action.');
     }
-    $changeRequest = ChangeRequest::findOrFail($id);
-    return view('change_requests.admin_edit', compact('changeRequest'));
-    }
 
-    public function update()
-    {
-        if (auth()->user()->role !== 'admin') {
+    $changeRequest = ChangeRequest::where('request_no', $id)->firstOrFail();
+
+    $moduleUsers = \App\Models\User::where('module', $changeRequest->project_module)->get();
+
+    return view('change_requests.admin_edit', compact('changeRequest', 'moduleUsers'));
+}
+
+    public function update(Request $request, $id)
+{
+    if (auth()->user()->role !== 'admin') {
         abort(403, 'Unauthorized action.');
     }
-        $changeRequest = ChangeRequest::findOrFail($id);
 
-        $changeRequest->update([
+    $changeRequest = ChangeRequest::where('request_no', $id)->firstOrFail();
+    
+    $changeRequest->update([
         'assigned_to'   => $request->assigned_to,
         'assigned_date' => $request->assigned_date,
-        'assigned_by'   => auth()->user()->name, // Lock to the admin's name
+        'assigned_by'   => auth()->user()->name, 
         'uat_by'        => $request->uat_by,
         'deployed_by'   => $request->deployed_by,
         'version'       => $request->version,
     ]);
 
-        return redirect()->route('change-requests.create')->with('success', 'Optional fields updated successfully!');
-        
-    }
+    return redirect()->route('change-requests.index')->with('success', 'Optional fields updated successfully!');
+}
 
     public function destroy()
     {
