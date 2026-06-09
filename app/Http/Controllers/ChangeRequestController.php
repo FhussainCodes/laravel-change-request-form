@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserRequestSubmitted;
+use App\Mail\AdminNewRequestAlert;
+use App\Mail\EngineerAssignmentNotice;
 use Illuminate\Http\Request;
 use App\Models\ChangeRequest;
 use App\Models\User;
@@ -38,7 +42,7 @@ public function getUsersByModule(Request $request)
 {
     $users = User::where('module', $request->module)->get(['id', 'name']);
     return response()->json($users);
-}
+ }
 
     public function store(Request $request)
     {
@@ -70,8 +74,12 @@ public function getUsersByModule(Request $request)
             'version' => $request->version,
         ]);
 
+        Mail::to(auth()->user()->email)->send(new UserRequestSubmitted($newRequest));
+        sleep(1);
+        Mail::to('admin@company.com')->send(new AdminNewRequestAlert($newRequest));
+
         return redirect()->route('change-requests.create')
-                     ->with('success', 'Change Request submitted successfully!');   
+                     ->with('success', 'Change Request submitted successfully!'); 
     }
 
     public function show()
@@ -110,7 +118,14 @@ public function getUsersByModule(Request $request)
         'version'       => $request->version,
     ]);
 
+    $engineer = User::where('name', $request->assigned_to)->first();
+    
+    if ($engineer) {
+        Mail::to($engineer->email)->send(new EngineerAssignmentNotice($changeRequest));
+    }
+
     return redirect()->route('change-requests.index')->with('success', 'Optional fields updated successfully!');
+
 }
 
     public function destroy($id)
