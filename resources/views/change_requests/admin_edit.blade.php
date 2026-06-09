@@ -5,15 +5,12 @@
 
     <div class="max-w-4xl mx-auto">
 
-        <!-- Main Card -->
         <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white">
 
-            <!-- Header -->
 <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8">
 
     <div class="flex items-center gap-4">
 
-        <!-- Icon container -->
         <div class="bg-white/90 p-4 rounded-2xl shadow-md">
             <svg class="w-8 h-8 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round"
@@ -24,12 +21,11 @@
         </div>
 
         <div>
-            <!-- Softer title color instead of pure white -->
+
             <h2 class="text-3xl font-bold text-indigo-50">
                 Process Change Request
             </h2>
 
-            <!-- slightly dimmed subtitle -->
             <p class="text-indigo-100 mt-1">
                 Request #{{ $changeRequest->request_no }}
             </p>
@@ -38,11 +34,8 @@
     </div>
 
 </div>
-
-            <!-- Body -->
             <div class="p-8">
 
-                <!-- Request Information -->
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-6 mb-8">
 
                     <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800 mb-5">
@@ -111,7 +104,6 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Assignment Section -->
                     <div class="bg-gray-50 rounded-2xl p-6 border">
 
                         <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800 mb-5">
@@ -171,7 +163,6 @@
 
                     </div>
 
-                    <!-- Deployment Section -->
                     <div class="bg-gray-50 rounded-2xl p-6 border">
 
                         <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800 mb-5">
@@ -230,24 +221,23 @@
 
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="pt-6 border-t">
 
                         <button type="submit"
-    class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-indigo-600 
-           text-indigo-700 font-bold tracking-wide shadow-md hover:shadow-xl hover:bg-indigo-50
-           transition-all duration-300 flex items-center justify-center gap-3">
+                        class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-indigo-600 
+                         text-indigo-700 font-bold tracking-wide shadow-md hover:shadow-xl hover:bg-indigo-50
+                            transition-all duration-300 flex items-center justify-center gap-3">
 
-    <svg class="w-5 h-5 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 13l4 4L19 7"/>
-    </svg>
+                    <svg class="w-5 h-5 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"/>
+                    </svg>
 
-    <span>Save & Finalize Workflow</span>
+                <span>Save & Finalize Workflow</span>
 
-</button>
+                        </button>
 
                     </div>
 

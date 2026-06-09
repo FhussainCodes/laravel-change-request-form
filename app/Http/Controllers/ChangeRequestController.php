@@ -28,15 +28,12 @@ public function create()
 
     $lastrecord = ChangeRequest::orderBy('request_no', 'desc')->first();
 
-    $newID = $lastrecord
-        ? $lastrecord->request_no + 1
-        : 1;
+    $newID = $lastrecord ? $lastrecord->request_no + 1 : 1;
 
     $module = request('module', '');
 
     return view(
-        'change_requests.create',
-        compact('newID', 'module')
+        'change_requests.create', compact('newID', 'module')
     );
 }
 
