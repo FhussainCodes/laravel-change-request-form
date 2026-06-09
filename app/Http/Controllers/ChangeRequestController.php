@@ -20,21 +20,18 @@ class ChangeRequestController extends Controller
     }   
 }
 
-public function create()
+  public function create()
 {
     if (auth()->user()->role === 'admin') {
         return redirect()->route('change-requests.index');
     }
+    
 
     $lastrecord = ChangeRequest::orderBy('request_no', 'desc')->first();
-
     $newID = $lastrecord ? $lastrecord->request_no + 1 : 1;
+    $module = request('module', ''); 
 
-    $module = request('module', '');
-
-    return view(
-        'change_requests.create', compact('newID', 'module')
-    );
+    return view('change_requests.create', compact('newID', 'module'));
 }
 
 public function getUsersByModule(Request $request)
@@ -93,6 +90,7 @@ public function getUsersByModule(Request $request)
     $moduleUsers = \App\Models\User::where('module', $changeRequest->project_module)->get();
 
     return view('change_requests.admin_edit', compact('changeRequest', 'moduleUsers'));
+    
 }
 
     public function update(Request $request, $id)

@@ -20,9 +20,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     
+   Route::get("/get-users-by-module", [ChangeRequestController::class, "getUsersByModule"])->name('get-users');
     Route::resource("change-requests", ChangeRequestController::class);
-    Route::get("/get-users-by-module", [ChangeRequestController::class, "getUsersByModule"])->name('get-users');
     
 });
 
 require __DIR__.'/auth.php';
+
