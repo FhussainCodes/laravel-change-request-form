@@ -22,6 +22,7 @@ class ChangeRequest extends Model
         'assigned_to',
         'assigned_date',
         'assigned_by',
+        'user_id',
         'uat_by',
         'deployed_by',
         'version'

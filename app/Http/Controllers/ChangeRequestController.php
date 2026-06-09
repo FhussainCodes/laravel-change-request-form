@@ -9,25 +9,35 @@ use App\Models\User;
 class ChangeRequestController extends Controller
 {
     public function index()
-{
+{ 
     if (auth()->user()->role === 'admin') {
         $changeRequests = ChangeRequest::orderBy('created_at', 'desc')->get();
         return view('change_requests.admin_dashboard', compact('changeRequests'));
-    }
-    return redirect()->route('change-requests.create');
+    }else{
+        $changeRequests = ChangeRequest::where('requested_by', auth()->user()->name)->
+        orderBy('created_at', 'desc')->get();
+        return view('change_requests.admin_dashboard', compact('changeRequests'));        
+    }   
 }
 
-  public function create()
+public function create()
 {
     if (auth()->user()->role === 'admin') {
         return redirect()->route('change-requests.index');
     }
 
     $lastrecord = ChangeRequest::orderBy('request_no', 'desc')->first();
-    $newID = $lastrecord ? $lastrecord->request_no + 1 : 1;
-    $module = request('module', ''); 
 
-    return view('change_requests.create', compact('newID', 'module'));
+    $newID = $lastrecord
+        ? $lastrecord->request_no + 1
+        : 1;
+
+    $module = request('module', '');
+
+    return view(
+        'change_requests.create',
+        compact('newID', 'module')
+    );
 }
 
 public function getUsersByModule(Request $request)

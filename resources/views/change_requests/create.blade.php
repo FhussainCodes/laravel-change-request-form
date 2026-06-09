@@ -98,7 +98,8 @@
                         <input
                             type="text"
                             name="requested_by"
-                            required
+                            value="{{ auth()->user()->name }}"   
+                            readonly
                             class="w-full rounded-xl border-gray-200 shadow-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all duration-200 p-3 text-slate-800"
                         >
                     </div>
