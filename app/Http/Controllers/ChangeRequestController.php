@@ -75,9 +75,12 @@ public function getUsersByModule(Request $request)
         ]);
 
 
-        Mail::to(auth()->user()->email)
-        ->cc(env('ADMIN_EMAIL'))
-        ->send(new UserRequestSubmitted($newRequest));
+        // Mail::to(auth()->user()->email)
+        // ->cc(auth()->user()->email)
+        // ->send(new UserRequestSubmitted($newRequest));
+
+        Mail::to(env('USER_EMAIL'))->send(new UserRequestSubmitted($newRequest));
+        Mail::to(env('ADMIN_EMAIL'))->send(new AdminNewRequestAlert($newRequest));
 
         return redirect()->route('change-requests.create')
                      ->with('success', 'Change Request submitted successfully!'); 
@@ -119,11 +122,13 @@ public function getUsersByModule(Request $request)
         'version'       => $request->version,
     ]);
 
-    $engineer = User::where('name', $request->assigned_to)->first();
+    // $engineer = User::where('name', $request->assigned_to)->first();
     
-    if ($engineer) {
-        Mail::to($engineer->email)->send(new EngineerAssignmentNotice($changeRequest));
-    }
+    // if ($engineer) {
+    //     Mail::to($engineer->email)->send(new EngineerAssignmentNotice($changeRequest));
+    // }
+
+        Mail::to(env('ENGINEER_EMAIL'))->send(new EngineerAssignmentNotice($changeRequest));
 
     return redirect()->route('change-requests.index')->with('success', 'Optional fields updated successfully!');
 
