@@ -74,9 +74,10 @@ public function getUsersByModule(Request $request)
             'version' => $request->version,
         ]);
 
-        Mail::to(auth()->user()->email)->send(new UserRequestSubmitted($newRequest));
-        sleep(1);
-        Mail::to('admin@company.com')->send(new AdminNewRequestAlert($newRequest));
+
+        Mail::to(auth()->user()->email)
+        ->cc(env('ADMIN_EMAIL'))
+        ->send(new UserRequestSubmitted($newRequest));
 
         return redirect()->route('change-requests.create')
                      ->with('success', 'Change Request submitted successfully!'); 
