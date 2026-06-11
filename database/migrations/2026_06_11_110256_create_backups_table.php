@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('backups', function (Blueprint $table) {
             $table->id();
+            $table->string('backup_type');      
+            $table->dateTime('backup_datetime'); 
+            $table->string('image')->nullable();  
+            $table->string('created_by');        
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('backups');
