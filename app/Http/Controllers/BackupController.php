@@ -39,8 +39,11 @@ class BackupController extends Controller
 
         public function index()
 {
-    $backups = Backup::latest()->get(); 
-    
+    // $backups = Backup::latest()->get(); 
+    // $backups = Backup::all(); 
+     $backups = Backup::where('created_by', auth()->user()->name)
+                     ->latest()
+                     ->get();
     return view('backups.index', compact('backups'));
 }
 }
