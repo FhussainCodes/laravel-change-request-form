@@ -25,7 +25,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/backups/create', [BackupController::class, 'create'])->name('backups.create');
     
-    // Route to handle the form data submission, image processing, and database saving
     Route::post('/backups', [BackupController::class, 'store'])->name('backups.store');
     
 });

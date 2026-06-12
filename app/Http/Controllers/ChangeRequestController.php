@@ -74,7 +74,6 @@ public function getUsersByModule(Request $request)
             'version' => $request->version,
         ]);
 
-
         // Mail::to(auth()->user()->email)
         // ->cc(auth()->user()->email)
         // ->send(new UserRequestSubmitted($newRequest));
