@@ -21,11 +21,11 @@ class BackupController extends Controller
             'image'           => 'required|image|mimes:jpeg,png,jpg|max:2048', 
         ]);
     
-            $file = $request->file('image');
-            
-            $imageName = time() . '_' . strtolower($request->backup_type) . '.' . $file->getClientOriginalExtension();
-            
-            $file->storeAs('public/backups', $imageName);
+        $file = $request->file('image');
+        
+        $imageName = time() . '_' . strtolower($request->backup_type) . '.' . $file->getClientOriginalExtension();
+        
+        $file->move(public_path('uploads/backups'), $imageName);
         
         Backup::create([
             'backup_type'     => $request->backup_type,

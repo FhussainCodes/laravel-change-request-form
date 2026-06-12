@@ -18,28 +18,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($backups as $backup)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td><span class="badge bg-info text-dark">{{ $backup->backup_type }}</span></td>
-                            <td>{{ \Carbon\Carbon::parse($backup->backup_datetime)->format('M d, Y h:i A') }}</td>
-                            <td>{{ $backup->created_by }}</td>
-                            <td>
-                                @if($backup->image)
-                                    <a href="{{ asset('storage/backups/' . $backup->image) }}" target="_blank">
-                                        <img src="{{ asset('storage/backups/' . $backup->image) }}" alt="Backup Image" style="max-width: 80px; height: auto; border-radius: 4px;">
-                                    </a>
-                                @else
-                                    <span class="text-muted">No Image</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">No backup logs found.</td>
-                        </tr>
-                    @endempty
-                </tbody>
+    @forelse($backups as $backup)
+        <tr>
+            <td style="padding: 12px;">{{ $loop->iteration }}</td>
+            <td style="padding: 12px;"><span class="badge bg-info text-dark">{{ $backup->backup_type }}</span></td>
+            <td style="padding: 12px;">{{ \Carbon\Carbon::parse($backup->backup_datetime)->format('M d, Y h:i A') }}</td>
+            <td style="padding: 12px;">{{ $backup->created_by }}</td>
+            <td style="padding: 12px;">
+    @if($backup->image)
+        <a href="{{ asset('uploads/backups/' . $backup->image) }}" target="_blank">
+            <img src="{{ asset('uploads/backups/' . $backup->image) }}" alt="Backup Image" style="width: 60px; height: 60px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
+        </a>
+    @else
+        <span class="text-muted">No Image</span>
+    @endif
+</td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="5" class="text-center text-muted" style="padding: 20px;">No backup logs found.</td>
+        </tr>
+    @endempty
+</tbody>
             </table>
         </div>
     </div>
