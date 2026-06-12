@@ -17,19 +17,16 @@ class BackupController extends Controller
     {
         $request->validate([
             'backup_type'     => 'required|string',
-            'backup_datetime' => 'required',
+            'backup_datetime' => 'required|date',
             'image'           => 'required|image|mimes:jpeg,png,jpg|max:2048', 
         ]);
-
-    $imageName = null;
-
-        if ($request->hasFile('image')) {
+    
             $file = $request->file('image');
             
             $imageName = time() . '_' . strtolower($request->backup_type) . '.' . $file->getClientOriginalExtension();
             
             $file->storeAs('public/backups', $imageName);
-        }
+        
 
         Backup::create([
             'backup_type'     => $request->backup_type,
