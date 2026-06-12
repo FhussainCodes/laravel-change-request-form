@@ -12,8 +12,9 @@
             @endif
 
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Log System Backup</h4>
+                <div class="card-header bg-primary text-black">
+                    <!-- <h4 class="mb-0">Log System Backup</h4> -->
+                    <a href="{{ route('backups.index') }}" class="btn btn-primary">Log system backup</a>
                 </div>
                 <div class="card-body">
                     

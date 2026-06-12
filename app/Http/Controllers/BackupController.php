@@ -36,4 +36,11 @@ class BackupController extends Controller
 
         return redirect()->back()->with('success', 'Backup record logged successfully!');
 }
+
+        public function index()
+{
+    $backups = Backup::latest()->get(); 
+    
+    return view('backups.index', compact('backups'));
+}
 }

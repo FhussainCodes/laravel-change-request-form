@@ -21,13 +21,12 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     
-   Route::get("/get-users-by-module", [ChangeRequestController::class, "getUsersByModule"])->name('get-users');
+    Route::get("/get-users-by-module", [ChangeRequestController::class, "getUsersByModule"])->name('get-users');
     Route::resource("change-requests", ChangeRequestController::class);
 
     Route::get('/backups/create', [BackupController::class, 'create'])->name('backups.create');
-    
     Route::post('/backups', [BackupController::class, 'store'])->name('backups.store');
-    
+    Route::get('/backups', [BackupController::class, 'index'])->name('backups.index');
 });
 
 require __DIR__.'/auth.php';
