@@ -14,7 +14,7 @@ class BackupController extends Controller
     }
 
     public function store(Request $request)
-    {
+    { 
         $request->validate([
             'backup_type'     => 'required|string',
             'backup_datetime' => 'required|date',
@@ -27,7 +27,6 @@ class BackupController extends Controller
             
             $file->storeAs('public/backups', $imageName);
         
-
         Backup::create([
             'backup_type'     => $request->backup_type,
             'backup_datetime' => $request->backup_datetime,
