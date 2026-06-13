@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/backups/create', [BackupController::class, 'create'])->name('backups.create');
     Route::post('/backups', [BackupController::class, 'store'])->name('backups.store');
     Route::get('/backups', [BackupController::class, 'index'])->name('backups.index');
+    Route::get('/backups/export-pdf', [BackupController::class, 'exportPdf'])->name('backups.export_pdf');
 });
 
 require __DIR__.'/auth.php';

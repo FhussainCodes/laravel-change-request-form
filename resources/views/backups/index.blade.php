@@ -1,47 +1,41 @@
-@extends('layouts.app') @section('content')
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <!-- <h2>System Backup Logs</h2> -->
-        <a href="{{ route('backups.create') }}" class="btn btn-primary">Log New Backup</a>
+@extends('layouts.app')
+
+@section('content')
+<div class="container mt-5 mx-auto max-w-7xl px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex wrap gap-4">
+        <h2 class="text-2xl font-bold">System Backup Logs</h2>
+        <a href="{{ route('backups.create') }}" class="btn btn-primary bg-blue-600 text-white px-4 py-2 rounded">Log New Backup</a>
     </div>
 
-    <div class="card shadow">
-        <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Backup Type</th>
-                        <th>Date & Time</th>
-                        <th>Created By</th>
-                        <th>Confirmation Image</th>
-                    </tr>
-                </thead>
-                <tbody>
-    @forelse($backups as $backup)
-        <tr>
-            <td style="padding: 12px;">{{ $loop->iteration }}</td>
-            <td style="padding: 12px;"><span class="badge bg-info text-dark">{{ $backup->backup_type }}</span></td>
-            <td style="padding: 12px;">{{ \Carbon\Carbon::parse($backup->backup_datetime)->format('M d, Y h:i A') }}</td>
-            <td style="padding: 12px;">{{ $backup->created_by }}</td>
-            <td style="padding: 12px;">
-    @if($backup->image)
-        <a href="{{ asset('uploads/backups/' . $backup->image) }}" target="_blank">
-            <img src="{{ asset('uploads/backups/' . $backup->image) }}" alt="Backup Image" style="width: 60px; height: 60px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
-        </a>
-    @else
-        <span class="text-muted">No Image</span>
-    @endif
-</td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="5" class="text-center text-muted" style="padding: 20px;">No backup logs found.</td>
-        </tr>
-    @endempty
-</tbody>
-            </table>
+   <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
+    <form action="{{ route('backups.index') }}" method="GET" class="flex flex-col md:flex-row md:items-end gap-4">
+        
+        <div class="flex-1">
+            <label for="from_date" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">From Date</label>
+            <input type="date" name="from_date" id="from_date" value="{{ request('from_date') }}" required
+                   class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm h-10">
         </div>
-    </div>
+        
+        <div class="flex-1">
+            <label for="to_date" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">To Date</label>
+            <input type="date" name="to_date" id="to_date" value="{{ request('to_date') }}" required
+                   class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm h-10">
+        </div>
+
+        <div class="flex items-center gap-2 mt-4 md:mt-0">
+            <button type="submit" class="bg-gray-700 hover:bg-gray-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-black font-medium text-sm h-10 px-5 rounded-md shadow transition duration-150 ease-in-out">
+                Filter Logs
+            </button>
+            
+            <a href="{{ route('backups.index') }}" class="bg-amber-500 hover:bg-amber-600 text-black font-medium text-sm h-10 px-5 rounded-md shadow transition duration-150 ease-in-out flex items-center justify-center">
+                Reset
+            </a>
+            
+            <a href="{{ route('backups.export_pdf', ['from_date' => request('from_date'), 'to_date' => request('to_date')]) }}" 
+               class="bg-red-600 hover:bg-red-700 text-white font-medium text-sm h-10 px-5 rounded-md shadow transition duration-150 ease-in-out flex items-center justify-center whitespace-nowrap">
+                Download PDF Report
+            </a>
+        </div>
+
+    </form>
 </div>
-@endsection

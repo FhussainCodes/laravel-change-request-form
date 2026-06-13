@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Backup;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BackupController extends Controller
 {
@@ -37,13 +38,46 @@ class BackupController extends Controller
         return redirect()->back()->with('success', 'Backup record logged successfully!');
 }
 
-        public function index()
+        public function index(Request $request)
 {
-    // $backups = Backup::latest()->get(); 
-    // $backups = Backup::all(); 
-     $backups = Backup::where('created_by', auth()->user()->name)
-                     ->latest()
-                     ->get();
-    return view('backups.index', compact('backups'));
+   
+    //  $backups = Backup::where('created_by', auth()->user()->name)
+    //                  ->latest()
+    //                  ->get();
+    // return view('backups.index', compact('backups'));
+    
+        $query = Backup::where('created_by', auth()->user()->name);
+
+        if ($request->filled('from_date')) {
+            $query->whereDate('backup_datetime', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('backup_datetime', '<=', $request->to_date);
+        }
+
+        $backups = $query->latest()->get();
+
+        return view('backups.index', compact('backups'));
 }
+
+public function exportPdf(Request $request)
+    {
+        $query = Backup::where('created_by', auth()->user()->name);
+
+        if ($request->filled('from_date')) {
+            $query->whereDate('backup_datetime', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('backup_datetime', '<=', $request->to_date);
+        }
+
+        $backups = $query->latest()->get();
+
+        $pdf = Pdf::loadView('backups.pdf', compact('backups'));
+
+        return $pdf->download('backup_logs_report.pdf');
+    }
+
 }
